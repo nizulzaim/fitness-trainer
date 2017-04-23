@@ -1,0 +1,7 @@
+node_modules/
+.sass-cache/
+.deploy/
+.desktopTmp/
+.vscode/
+version.desktop
+packages/
