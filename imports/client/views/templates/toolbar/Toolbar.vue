@@ -4,9 +4,9 @@
             <div slot="left">
                 <icon-button name="menu" v-open v-ripple="{background: '#fff'}"></icon-button>
             </div>
-            <!--<div slot="center">
+            <div slot="center" v-if="searchIcon">
                 <search-box v-model="value"></search-box>
-            </div>-->
+            </div>
         </app-bar>
     </span>
 </template>
@@ -25,6 +25,14 @@ export default {
                 inner: this.title,
             }
         },
+    },
+    computed: {
+        searchIcon() {
+            if(this.$route.meta.searchIcon) {
+                return true;
+            }
+            return false;
+        }
     },
     methods: {
         updateTitle() {

@@ -34,7 +34,7 @@ export default [{
     }
 },{
     path: `${routesParent}/glucose-history`,
-    name: "BPHistory",
+    name: "GlucoseHistory",
     meta: { fixToolbar: true, pageTitle: "Glucose Level" },
     components: {
         default: GlucoseHistory,
