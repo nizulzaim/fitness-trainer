@@ -5,6 +5,11 @@
                 <icon name="home"></icon> Dashboard
             </nav-list>
         </router-link>
+        <router-link to="/dashboard/self-treatment" exact>
+            <nav-list class="nav-item">
+                <icon name="hospital"></icon> Self Treatment
+            </nav-list>
+        </router-link>
         <router-link to="/dashboard/bmi-history" exact>
             <nav-list class="nav-item">
                 <icon name="weight"></icon> Body Mass Index

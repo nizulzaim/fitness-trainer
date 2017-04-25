@@ -1,8 +1,9 @@
 <template>
     <span>
-        <app-bar :title="title" :fixed="true" background-color="theme" v-depth="1">
+        <app-bar :title="title" :fixed="true" background-color="theme" v-depth="depth">
             <div slot="left">
-                <icon-button name="menu" v-open v-ripple="{background: '#fff'}"></icon-button>
+                <icon-button v-show="!backIcon" name="menu" v-open v-ripple="{background: '#fff'}"></icon-button>
+                <icon-button v-show="backIcon" name="arrow-left" @click="backOne" v-ripple="{background: '#fff'}"></icon-button>
             </div>
             <div slot="center" v-if="searchIcon">
                 <search-box v-model="value"></search-box>
@@ -32,6 +33,18 @@ export default {
                 return true;
             }
             return false;
+        },
+        backIcon() {
+            if(this.$route.meta.backIcon) {
+                return true;
+            }
+            return false;
+        },
+        depth() {
+            if(this.$route.meta.depth !== undefined) {
+                return this.$route.meta.depth;
+            }
+            return 1;
         }
     },
     methods: {
@@ -43,6 +56,9 @@ export default {
                 }
             }
         },
+        backOne() {
+            this.$router.go(-1);
+        }
     },
     watch: {
         value(newVal) {
