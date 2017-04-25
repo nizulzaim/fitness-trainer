@@ -6,19 +6,19 @@
 					<img class="img-responsive" src="/img/logo.png" alt="">
 				</div>
 				<cards v-depth="3">
-					<form @submit.prevent="registerOrLoginHandler">
+					<form @submit.prevent="loginHandler">
 						<cards-content>
-							<div class="font-subhead no-margin">Set your username</div>
+							<div class="font-subhead no-margin">Login with username: {{user.username}}</div>
 						</cards-content>
 						<divider></divider>
 						<cards-content>
-							<textfield placeholder="Username" v-model="user.username"></textfield>
+							<textfield placeholder="Password" type="password" v-model="user.password"></textfield>
 						</cards-content>
 						<divider></divider>
 						<cards-action>
 							<div class="pull-right">
 								<color-button v-ripple class="primary" type="submit">
-									<icon name="arrow-right"></icon>Next
+									<icon name="arrow-right"></icon>Login
 								</color-button>
 							</div>
 						</cards-action>
@@ -41,29 +41,33 @@
 		data() {
 			return {
 				user: {
-					username: "",
+					username: Session.get("username"),
+                    password: "",
 				}
 			}
 		},
 		mounted() {
+            if (!this.user.username) {
+                return this.$router.push("/");
+            }
 			if (Meteor.userId()) {
 				this.$router.push("/dashboard/")
 			}
 		},
 		methods: {
-			registerOrLoginHandler() {
+			loginHandler() {
 				let user = new User();
 				
-				user.callMethod('isExist', this.user.username, (err, result) => {
-					Session.set("username", this.user.username);
-					if (result) {
-						return this.$router.push("/login");
+                Meteor.loginWithPassword(this.user.username, this.user.password, (err) => {
+					if (err) {
+						this.$snackbar.run("Incorrect username or password", () => {}, "OK", "error");
+						return;
 					}
-
-					return this.$router.push("/register");
-				});
+					this.$snackbar.run("Welcome to Fitness Trainer", () => {});
+					this.$router.replace("/dashboard/");
+				})
 			}
-		}
+		},
 	}
 </script>
 

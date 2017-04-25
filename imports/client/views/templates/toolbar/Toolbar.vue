@@ -1,6 +1,6 @@
 <template>
     <span>
-        <app-bar :title="title" :fixed="true" background-color="theme" v-depth="0">
+        <app-bar :title="title" :fixed="true" background-color="theme" v-depth="1">
             <div slot="left">
                 <icon-button name="menu" v-open v-ripple="{background: '#fff'}"></icon-button>
             </div>
@@ -34,19 +34,23 @@ export default {
                     this.$emit('updateHead')
                 }
             }
-        }
+        },
     },
     watch: {
         value(newVal) {
             Session.set("searchValue", newVal);
         },
+        "$route.meta.pageTitle"(newVal) {
+            this.updateTitle();
+        }
     },
-    beforeRouteEnter: (to, from, next) => {
-        if(to.matched.some(record => record.meta.pageTitle)) {
-            next(vm => {
-                vm.title = to.meta.pageTitle;
-                vm.$emit('updateHead');
-            });
+    mounted() {
+        this.updateTitle();
+    },
+    meteor: {
+        changingTitleFromSession() {
+            this.updateTitle();
+            return Session.get("titleChangeHappen");
         }
     }
 }
