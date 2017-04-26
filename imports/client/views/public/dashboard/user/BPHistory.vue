@@ -3,7 +3,7 @@
         <page-container>
             <div class="row">
                 <latest-blood-pressure :depth="3"></latest-blood-pressure>
-                <div class="col-xs-fluid-24">
+                <div class="col-xs-fluid-24"  v-if="othersBP.count()">
                     <div class="font-title">Outdated BMI</div>
                 </div>
                 <div class="col-xs-fluid-24" v-for="b in othersBP">

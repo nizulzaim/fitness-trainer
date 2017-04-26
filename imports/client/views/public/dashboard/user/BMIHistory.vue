@@ -35,7 +35,7 @@
                         </cards-action>
                     </cards>
                 </div>
-                <div class="col-xs-fluid-24">
+                <div class="col-xs-fluid-24" v-if="othersBMI.count()">
                     <div class="font-title">Outdated BMI</div>
                 </div>
                 <div class="col-xs-fluid-24" v-for="b in othersBMI">

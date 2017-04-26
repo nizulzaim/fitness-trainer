@@ -3,7 +3,7 @@
         <page-container>
             <div class="row">
                 <latest-glucose :depth="3"></latest-glucose>
-                <div class="col-xs-fluid-24">
+                <div class="col-xs-fluid-24"  v-if="othersG.count()">
                     <div class="font-title">Outdated Glucose Level</div>
                 </div>
                 <div class="col-xs-fluid-24" v-for="b in othersG">
