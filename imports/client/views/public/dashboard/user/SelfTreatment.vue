@@ -1,6 +1,6 @@
 <template>
     <div class="appbar-padding background-white" style="min-height: 100%">
-        <list class="hover">
+        <list class="hover not-auto-dense">
             <router-link v-for="d in filterDatas" :to="{ name: 'SelfTreatmentDetails', params: { id: d.id }}">
                 <list-item  v-ripple class="color-grey-900">
                     <span slot="left">

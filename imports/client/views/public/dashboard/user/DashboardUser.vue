@@ -39,7 +39,7 @@
                 <latest-glucose></latest-glucose>
             </div>
         </page-container>
-        <reveal v-model="showUpdateDetails" :has-overlay="true">
+        <reveal v-model="showUpdateDetails" :enable-overlay-click="false">
             <div class="col-md-fluid-10">
                 <cards>
                     <cards-content class="background-theme">
@@ -126,7 +126,7 @@
         },
         mounted() {
             
-            for(let i = 1960; i < 2017; i++) {
+            for(let i = 2016; i >= 1960; i--) {
                 this.possibleYear.push(i);
             }
         },

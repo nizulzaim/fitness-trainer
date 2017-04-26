@@ -12,9 +12,9 @@
 						</cards-content>
 						<divider></divider>
 						<cards-content>
-							<textfield placeholder="Username" v-model="user.username"></textfield>
-							<textfield placeholder="Password" type="password" v-model="user.password"></textfield>
-							<textfield placeholder="Confirm Password" type="password" v-model="user.cpassword"></textfield>
+							<textfield placeholder="Username" v-model="user.username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textfield>
+							<textfield placeholder="Password" type="password" v-model="user.password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textfield>
+							<textfield placeholder="Confirm Password" type="password" v-model="user.cpassword" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textfield>
 						</cards-content>
 						<divider></divider>
 						<cards-action>

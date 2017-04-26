@@ -12,7 +12,7 @@
 						</cards-content>
 						<divider></divider>
 						<cards-content>
-							<textfield placeholder="Password" type="password" v-model="user.password"></textfield>
+							<textfield placeholder="Password" type="password" v-model="user.password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textfield>
 						</cards-content>
 						<divider></divider>
 						<cards-action>

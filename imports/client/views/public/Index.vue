@@ -12,7 +12,7 @@
 						</cards-content>
 						<divider></divider>
 						<cards-content>
-							<textfield placeholder="Username" v-model="user.username"></textfield>
+							<textfield placeholder="Username" v-model="user.username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textfield>
 						</cards-content>
 						<divider></divider>
 						<cards-action>
