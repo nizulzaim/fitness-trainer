@@ -7,7 +7,7 @@
 meteor-base@1.0.4             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
 mongo@1.1.16                   # The database Meteor supports right now
-reactive-var@1.0.11            # Reactive variable for tracker
+reactive-var            # Reactive variable for tracker
 jquery@1.11.10                  # Helpful client-side library
 tracker@1.1.2                 # Meteor's client-side reactive programming library
 
@@ -16,7 +16,7 @@ standard-minifier-js@2.0.0-rc.1    # JS minifier run for production mode
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.8.0-beta.13              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.2.3            # Server-side component of the `meteor shell` command
-static-html@1.1.12_1
+static-html
 akryum:vue
 akryum:vue-component
 session@1.1.7
@@ -24,7 +24,6 @@ akryum:vue-router2
 omega:meteor-desktop-watcher
 omega:meteor-desktop-bundler
 omega:meteor-desktop-localstorage
-force-ssl
 msavin:mongol
 accounts-password
 alanning:roles
@@ -37,5 +36,6 @@ reywood:publish-composite
 peerlibrary:user-extra
 peerlibrary:reactive-publish
 akryum:vue-sass
-dynamic-import@0.1.0-beta.13
+dynamic-import
 devsignstudio:viu-ui
+crosswalk

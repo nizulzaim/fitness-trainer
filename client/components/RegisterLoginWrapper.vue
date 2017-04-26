@@ -1,5 +1,5 @@
 <template>
-    <div class="background-deep-purple" v-wheight="100" >
+    <div class="background-theme" v-wheight="100" >
         <div class="__background-wrap">
             <div class="__background"></div>
         </div>
@@ -21,7 +21,7 @@
         height: 100%;
         -webkit-backface-visibility: hidden;
         .__background {
-            background: url(/img/b.jpg) center;
+            background: url(/img/back-min.jpg) center;
             background-size: cover;
             filter: blur(3px);
             position: absolute;
