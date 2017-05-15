@@ -1,10 +1,14 @@
 import {IndexNavigation, Toolbar} from "/imports/client/template";
 import Dashboard from '/imports/client/views/public/dashboard/Dashboard.vue';
 import BMIHistory from '/imports/client/views/public/dashboard/user/BMIHistory.vue';
+import BMIInfo from '/imports/client/views/public/dashboard/user/BMIInfo.vue';
 import BPHistory from '/imports/client/views/public/dashboard/user/BPHistory.vue';
+import BpInfo from '/imports/client/views/public/dashboard/user/BpInfo.vue';
 import GlucoseHistory from '/imports/client/views/public/dashboard/user/GlucoseHistory.vue';
+import GlucoseInfo from '/imports/client/views/public/dashboard/user/GlucoseInfo.vue';
 import SelfTreatment from '/imports/client/views/public/dashboard/user/SelfTreatment.vue';
 import SelfTreatmentDetails from '/imports/client/views/public/dashboard/user/SelfTreatmentDetails.vue';
+import AddSelfTreatment from '/imports/client/views/public/dashboard/admin/AddSelfTreatment.vue';
 
 let routesParent = "/dashboard";
 export default [{
@@ -35,11 +39,38 @@ export default [{
         navigation: IndexNavigation,
     }
 },{
+    path: `${routesParent}/bp-info`,
+    name: "BPInfo",
+    meta: { fixToolbar: true, pageTitle: "Blood Pressure Info" },
+    components: {
+        default: BpInfo,
+        toolbar: Toolbar,
+        navigation: IndexNavigation,
+    }
+},{
+    path: `${routesParent}/bmi-info`,
+    name: "BMIInfo",
+    meta: { fixToolbar: true, pageTitle: "BMI Info" },
+    components: {
+        default: BMIInfo,
+        toolbar: Toolbar,
+        navigation: IndexNavigation,
+    }
+},{
     path: `${routesParent}/glucose-history`,
     name: "GlucoseHistory",
     meta: { fixToolbar: true, pageTitle: "Glucose Level" },
     components: {
         default: GlucoseHistory,
+        toolbar: Toolbar,
+        navigation: IndexNavigation,
+    }
+},{
+    path: `${routesParent}/glucose-info`,
+    name: "GlucoseInfo",
+    meta: { fixToolbar: true, pageTitle: "Glucose Info" },
+    components: {
+        default: GlucoseInfo,
         toolbar: Toolbar,
         navigation: IndexNavigation,
     }
@@ -58,6 +89,15 @@ export default [{
     meta: { fixToolbar: true, backIcon: true, depth: 0, pageTitle: "Self Treatment" },
     components: {
         default: SelfTreatmentDetails,
+        toolbar: Toolbar,
+        navigation: IndexNavigation,
+    }
+}, {
+    path: `${routesParent}/add-treatment`,
+    name: "AddSelfTreatment",
+    meta: { fixToolbar: true, backIcon: true, depth: 1, pageTitle: "Add Self Treatment" },
+    components: {
+        default: AddSelfTreatment,
         toolbar: Toolbar,
         navigation: IndexNavigation,
     }

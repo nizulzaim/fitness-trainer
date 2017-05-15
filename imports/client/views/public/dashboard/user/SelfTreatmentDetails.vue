@@ -4,7 +4,7 @@
             <slider-item class="appbar-padding">
                 <scroll-bar>
                     <div class="font-display1 color-white">
-                        <img :src="thisData.image" class="img-responsive" v-depth="2">
+                        <img v-if="thisData.getImageLink()" :src="thisData.getImageLink()" class="img-responsive" v-depth="2">
                         <div class="font-title font-light color-white font-center" style="padding: 20px;">
                             {{thisData.info}} 
                         </div>
@@ -37,7 +37,7 @@
                     </div>
                 </scroll-bar>
             </slider-item>
-            <slider-item class="appbar-padding" v-if="thisData.prevention">
+            <slider-item class="appbar-padding" v-if="thisData.prevention.length">
                 <scroll-bar>
                     <div class="font-display1 color-white">
                         <list class="hover">
@@ -56,20 +56,11 @@
 </template>
 
 <script>
-    import {DataById} from "/imports/client/dummyData";
+    import {Treatment} from '/imports/model/Treatment.js';
     export default {
-        data() {
-            return {
-                thisData: DataById(parseInt(this.$route.params.id)),
-            }
-        },
-        mounted() {
-            this.$route.meta.pageTitle = "What is " + this.thisData.title + "?";
-            Session.set("titleChangeHappen",this.$route.meta.pageTitle);
-        },
         methods: {
             nextAction() {
-                this.$snackbar.run("You can redirect to other page here");
+                this.$router.replace("/dashboard/self-treatment");
             },
             changeTitle(v) {
                 if (v === 0) {
@@ -83,6 +74,19 @@
                 }
                 Session.set("titleChangeHappen",this.$route.meta.pageTitle);
             }
+        },
+        meteor: {
+            subscribe: {
+                treatments: [],
+            },
+            thisData() {
+                let thisData = Treatment.findOne(this.$route.params.id);
+                if (thisData) {
+                    this.$route.meta.pageTitle = "What is " + thisData.title + "?";
+                    Session.set("titleChangeHappen",this.$route.meta.pageTitle);
+                }
+                return thisData;
+            },
         }
     }
 </script>

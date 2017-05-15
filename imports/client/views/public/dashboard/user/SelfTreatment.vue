@@ -1,7 +1,7 @@
 <template>
     <div class="appbar-padding background-white" style="min-height: 100%">
         <list class="hover not-auto-dense">
-            <router-link v-for="d in filterDatas" :to="{ name: 'SelfTreatmentDetails', params: { id: d.id }}">
+            <router-link v-for="d in filterDatas" :key="d._id" :to="{ name: 'SelfTreatmentDetails', params: { id: d._id }}">
                 <list-item  v-ripple class="color-grey-900">
                     <span slot="left">
                         <avatar :text="d.title"></avatar>
@@ -18,24 +18,35 @@
 
 <script>
     import Datas from "/imports/client/dummyData";
-
+    import {Treatment} from '/imports/model/Treatment.js';
     export default {
-        data() {
-            return {
-                datas: Datas,
-            }
-        },
         computed: {
             filterDatas() {
                 return this.datas.filter((d) => {
-                    if (!this.searchValue) {
+                    if (this.searchValue === undefined || this.searchValue === null) {
                         return true;
                     }
+
+                    if (this.searchValue === "") {
+                        Session.set("titleChangeHappen",this.$defaultTitle);
+                        return true;
+                    }
+
                     return d.title.toLowerCase().search(this.searchValue.toLowerCase()) > -1 ;
                 })
             }
         },
+        beforeDestroy() {
+            Session.set("searchValue", null);
+            Session.set("titleChangeHappen",this.$defaultTitle);
+        },
         meteor: {
+            subscribe: {
+                treatments: [],
+            },
+            datas() {
+                return Treatment.find();
+            },
             searchValue() {
                 let value = Session.get("searchValue");
                 if (value) {
