@@ -50,6 +50,7 @@
                                 <textfield v-model="bp.diastolic" placeholder="Bottom (mm Hg)"></textfield>
                             </div>
                             <div class="col-xs-fluid-24">
+                                <div class="font-subhead" style="margin-top: 20px;" v-if="showOptions">Please √ the information below</div>
                                 <list class="hover" :dense="true" v-if="showOptions">
                                     <list-item v-for="(opt, index) in options" v-on:click="options[index].option = !options[index].option">
                                         <span slot="left">

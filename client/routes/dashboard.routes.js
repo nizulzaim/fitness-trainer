@@ -14,7 +14,7 @@ let routesParent = "/dashboard";
 export default [{
     path: `${routesParent}/`,
     name: "Dashboard",
-    meta: { fixToolbar: true, pageTitle: "Fitness Trainer" },
+    meta: { fixToolbar: true, pageTitle: "H-Fit" },
     components: {
         default: Dashboard,
         toolbar: Toolbar,
