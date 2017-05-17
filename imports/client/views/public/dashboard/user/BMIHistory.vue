@@ -120,6 +120,7 @@
                 </cards>
             </div>
         </reveal>
+        <loader ref="loader"></loader>
     </div>
 </template>
 
@@ -153,11 +154,14 @@
         },
         methods: {
             updateDetails() {
+                this.$refs.loader.enable();
                 if (this.user.name==="" || this.user.yearOfBirth === "" || this.user.gender === ""){
+                    this.$refs.loader.disable();
                     return this.$snackbar.run("Please complete the details before submit");
                 }
 
                 this.loginUser.callMethod("update", this.user, (err, result) => {
+                    this.$refs.loader.disable();
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }
@@ -167,8 +171,10 @@
                 
             },
             addBMI() {
+                this.$refs.loader.enable();
                 let b = new Bmi();
                 b.callMethod("create", this.bmi, (err, result) => {
+                    this.$refs.loader.disable();
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }

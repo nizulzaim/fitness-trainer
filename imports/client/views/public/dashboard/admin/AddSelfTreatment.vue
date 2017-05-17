@@ -63,6 +63,7 @@
                 </form>
             </cards>
         </page-container>
+        <loader ref="loader"></loader>
     </div>
 </template>
 
@@ -85,6 +86,8 @@
             }
         },
         mounted() {
+            this.image = "";
+            this.parse.imageId = "";
             this.addSympthom();
             this.addFirstAid();
             this.addPrevention();
@@ -104,6 +107,7 @@
             },
             addTreatment() {
                 let t = new Treatment();
+                this.$refs.loader.enable();
                 this.parse.sympthom.forEach((item, index)=> {
                     if (item === "") {
                         this.parse.sympthom.splice(index, 1);
@@ -123,19 +127,22 @@
                 })
 
                 if (this.parse.sympthom.length === 0) {
+                    this.$refs.loader.disable();
                     return this.$snackbar.run("Please enter at least one sympthom", ()=>{}, "Ok", "error");
                 }
 
                 if (this.parse.firstAid.length === 0) {
+                    this.$refs.loader.disable();
                     return this.$snackbar.run("Please enter at least one first aid", ()=>{}, "Ok", "error");
                 }
 
                 t.callMethod("create", this.parse, (err, res)=> {
+                    this.$refs.loader.disable();
                     if (err) {
                         return this.$snackbar.run("Error when creating new treatment", ()=>{}, "Ok", "error");
                     }
-
-                    return this.$snackbar.run("Successfully create new treatment");
+                    this.$snackbar.run("Successfully create new treatment");
+                    return this.$router.replace("/dashboard/self-treatment");
                 })
             },
             upload() {
@@ -149,26 +156,39 @@
                         chunkSize: 'dynamic'
                     }, false);
 
-                    upload.on('start',function() {
-                        // self.uploadNewData = false;
-                        // setTimeout(()=> {
-                        //     self.currentUpload.set(this);
-                        //     self.showCardsUploader = true;
-                        // }, 300);
+                    upload.on('start',()=>{
+                        this.$refs.loader.toggle();
                     });
 
                     upload.on('end', (error, fileObj) => {
                         if (error) {
                             return this.$snackbar.run('Error during upload: ' + error.reason, ()=> {}, "OK", "error");
                         } 
-                        console.log(fileObj);
                         this.$snackbar.run('File "' + fileObj.name + '" successfully uploaded');
                         this.parse.imageId = fileObj._id;
-                        this.image = fileObj._downloadRoute + "/images/" + fileObj._id + "/original/" + fileObj._id + "." +fileObj.extension;
-                        // this.currentUpload.set(false);
+                        setTimeout(()=> {
+                            this.$refs.loader.toggle();
+                        }, 300)
                     });
                     upload.start();
                 }
+            }
+        },
+        meteor: {
+            subscribe:{
+                imageById() {
+                    if (this.parse.imageId ) {
+                        return [this.parse.imageId];
+                    }
+                    return [""];
+                },
+            },
+            images() {
+                let image = Images.findOne();
+                if (image) {
+                    this.image = image.link();
+                }
+                return image;
             }
         },
         computed: {

@@ -28,6 +28,7 @@
 				</cards>
 			</div>
 		</div>
+		<loader ref="loader"></loader>
 	</register-login-wrapper>
 </template>
 
@@ -59,7 +60,18 @@
 		},
 		methods: {
 			submitHandler() {
+				this.$refs.loader.enable();
+
+				if (this.user.password.length < 8) {
+					this.$refs.loader.disable();
+					this.user.password = "";
+					this.user.cpassword = "";
+                    return this.$snackbar.run("Password length must at least 8 alphanumeric", () => {}, "OK", "error");
+				}
 				if (this.user.password !== this.user.cpassword) {
+					this.$refs.loader.disable();
+					this.user.password = "";
+					this.user.cpassword = "";
                     return this.$snackbar.run("Please confirm your password with correct password", () => {}, "OK", "error");
                 }
                 let user = new User();
@@ -69,6 +81,7 @@
                 }
                 let pObj = {};
                 user.callMethod("create", uObj, pObj, (err, result) => {
+					this.$refs.loader.toggle();
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }

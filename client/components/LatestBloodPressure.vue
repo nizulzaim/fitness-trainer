@@ -110,6 +110,7 @@
                 </cards>
             </div>
         </reveal>
+        <loader ref="loader"></loader>
     </div>
 </template>
 
@@ -170,6 +171,7 @@
         },
         methods: {
             save() {
+                this.$refs.loader.enable();
                 let b = new BloodPressure();
                 this.options.forEach((item, index)=> {
                     if (item.option) {
@@ -178,6 +180,7 @@
                 });
 
                 b.callMethod("create", this.bp, (err, result) => {
+                    this.$refs.loader.disable();
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }

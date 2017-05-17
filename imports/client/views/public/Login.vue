@@ -26,6 +26,7 @@
 				</cards>
 			</div>
 		</div>
+		<loader ref="loader"></loader>
 	</register-login-wrapper>
 </template>
 
@@ -57,8 +58,9 @@
 		methods: {
 			loginHandler() {
 				let user = new User();
-				
+				this.$refs.loader.toggle();
                 Meteor.loginWithPassword(this.user.username, this.user.password, (err) => {
+					this.$refs.loader.toggle();
 					if (err) {
 						this.$snackbar.run("Incorrect username or password", () => {}, "OK", "error");
 						return;

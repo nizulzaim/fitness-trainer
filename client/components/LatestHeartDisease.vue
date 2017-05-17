@@ -1,65 +1,48 @@
 <template>
     <div class="col-xs-fluid-24">
         <cards v-depth="depth">
-            <cards-content v-if="!latestG">
+            <cards-content v-if="!latestHD">
                 <icon name="emoticon-sad" class="color-grey-300 font-center" style="font-size: 130px; line-height: 140px; height: 140px; width: 100%;"></icon>
-                <div class="font-subhead color-grey-700 font-center no-margin">There are no data about your glucose level for now. You can add your Glucose Level details.</div>
+                <div class="font-subhead color-grey-700 font-center no-margin">There are no data about your heart disease. Answer Question for heart disease level diagnostic</div>
             </cards-content>
             <div>
-                <cards-content v-if="latestG" :class="color" >
+                <cards-content v-if="latestHD" :class="color" >
                     <div class="color-white font-light font-title font-center no-margin">
-                        Latest Glucose Level
+                        Latest Heart Disease
                     </div>
                     <div class="color-white font-light font-display3 font-center no-margin">
-                        {{latestG.categoryDescription()}}
+                        {{latestHD.categoryDescription()}}
                     </div>
                     <div class="button-center-container" >
                         <color-button @click="showSuggestion = true" v-ripple class="white">View Suggestion</color-button>
                     </div>
                 </cards-content>
             </div>
-            <!--<cards-content v-if="latestBP" class="background-pink-800">
-                <div class="color-white font-light font-display1 font-center no-margin">{{latestBP.description()}}</div>
-            </cards-content>-->
-            <cards-content v-if="latestG">
-                <div class="font-light font-subhead font-center no-margin">Glucose (Mg/dL): {{latestG.value.toFixed(2)}} Mg/dL</div>
-                <divider></divider>
-                <div class="font-light font-subhead font-center no-margin">Glucose (Mmol/L): {{latestG.mmolValue().toFixed(1)}} Mmol/L</div>
-            </cards-content>
             <divider></divider>
             <cards-action class="cards-content">
                 <div class="pull-right">
-                    <color-button @click="showAddG = true" class="accent" v-ripple><icon name="speedometer"></icon> Add Glucose Level</color-button>
+                    <color-button @click="showAddHD = true" class="accent" v-ripple><icon name="speedometer"></icon> Heart Disease diagnosis</color-button>
                 </div>
             </cards-action>
         </cards>
 
-        <reveal v-model="showAddG">
+        <reveal v-model="showAddHD">
             <div class="col-md-fluid-10">
                 <cards>
                     <cards-content class="background-theme">
-                        <div class="color-white font-light font-title font-center no-margin">Add Glucose Level</div>
+                        <div class="color-white font-light font-title font-center no-margin">Diagnosis Heart Disease</div>
                         <div class="color-white font-center">We will automatically calculate if you have diabetes using your glucose level</div>
                     </cards-content>
                     <cards-content-scrollbar>
                         <div class="row has-gutter">
-                            <div class="col-xs-fluid-7">
-                                <dropdown-select v-model="g.unit" label="Unit">
-                                    <menu-option :value="0">Mg/dL</menu-option>
-                                    <menu-option :value="1">Mmol/L</menu-option>
-                                </dropdown-select>
-                            </div>
-                            <div class="col-xs">
-                                <textfield v-model="g.value" :placeholder="unitLabel"></textfield>
-                            </div>
-                            <div class="col-xs-fluid-24">
-                                <div class="font-subhead" style="margin-top: 20px;" v-if="showOptions">Please √ the information below</div>
-                                <list class="hover" :dense="true" v-if="showOptions">
-                                    <list-item v-for="(opt, index) in options" v-on:click="options[index].option = !options[index].option">
+                            <div class="col-xs-fluid-24" v-for="(opt, index) in options">
+                                <div class="font-subhead" style="margin-top: 20px;">{{opt.name}}</div>
+                                <list class="hover" :dense="true" style="margin: 0 -12px;">
+                                    <list-item v-for="(o, i) in opt.option" @click="opt.result = opt.option[i].value">
                                         <span slot="left">
-                                            <checkbox v-model="options[index].option"></checkbox>
+                                            <radio v-model="opt.result" :val="opt.option[i].value" :name="'radioData' + index"></radio>
                                         </span>
-                                       {{opt.name}}
+                                       {{o.text}}
                                     </list-item>
                                 </list>
                             </div>
@@ -68,24 +51,24 @@
                     <divider></divider>
                     <cards-action class="cards-content">
                         <div class="pull-right">
-                            <color-button @click="save" class="primary" v-ripple>Add Data</color-button>
+                            <color-button @click="save" class="primary" v-ripple>Confirm</color-button>
                         </div>
                     </cards-action>
                 </cards>
             </div>
         </reveal>
         <reveal v-model="showSuggestion">
-            <div class="col-md-fluid-10" v-if="latestG">
+            <div class="col-md-fluid-10" v-if="latestHD">
                 <cards>
                     <cards-content class="background-theme">
                         <div class="color-white font-light font-title font-center no-margin">Nutrition & Exercises</div>
-                        <div class="color-white font-regular font-subhead font-center no-margin">for {{latestG.categoryDescription()}}</div>
+                        <div class="color-white font-regular font-subhead font-center no-margin">for {{latestHD.categoryDescription()}}</div>
                     </cards-content>
                     <cards-content-scrollbar>
                         <div style="margin: -8px -12px">
                             <list class="hover" :dense="true">
                                 <div class="font-caption no-margin font-medium" style="padding: 12px 16px">Nutritions</div>
-                                <list-item v-for="(n, index) in latestG.nutritionLists()">
+                                <list-item v-for="(n, index) in latestHD.nutritionLists()">
                                     <div slot="left">
                                         <icon name="food" class="color-pink"></icon>
                                     </div>
@@ -95,7 +78,7 @@
 
                             <list class="hover" :dense="true">
                                 <div class="font-caption no-margin font-medium" style="padding: 12px 16px">Exercises</div>
-                                <list-item v-for="(n, index) in latestG.exerciseLists()">
+                                <list-item v-for="(n, index) in latestHD.exerciseLists()">
                                     <div slot="left">
                                         <icon name="run" class="color-indigo"></icon>
                                     </div>
@@ -119,7 +102,7 @@
 
 <script>
     import {User} from "/imports/model/User";
-    import {Glucose} from "/imports/model/Glucose";
+    import {HeartDisease} from "/imports/model/HeartDisease";
     export default {
         props: {
             depth: {
@@ -129,81 +112,80 @@
         },
         data() {
             return {
-                showAddG: false,
+                showAddHD: false,
                 latestShowDetails: false,
                 showSuggestion: false,
-                g: {
+                hd: {
                     value: "",
                     unit: 0,
                     condition: [],
                 },
                 options: [
-                    {name: "Above average thirst", option: false},
-                    {name: "Tiredness during the day", option: false},
-                    {name: "Needing to pee regularly", option: false},
-                    {name: "Unexplained weight loss", option: false},
-                    {name: "Have you ever been told you had diabetes or a problem with blood pressure", option: false},
-                    {name: "Has anyone in your immediate family (mother, father, sister, brother) had diabetes?", option: false},
-                    {name: "Waist size greater than 35 inches (88 cm)", option: false},
+                    {name: "Have you ever had a heart attack or been told that you have heart disease?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "Have you ever been told that you have high blood pressure (hypertension) or have you ever been given blood pressure medication?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "Have you ever been told you had diabetes or a problem with high blood sugar?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "Have you ever been told that your total cholesterol level is high?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "What is your total cholesterol level?", result: 0, option: [
+                        {value: 0, text: "159 or lower"}, 
+                        {value: 1, text: "160-199"},
+                        {value: 2, text: "200-239"},
+                        {value: 3, text: "240-279"},
+                        {value: 4, text: "280 or higher"},
+                        {value: 5, text: "Don't know"}
+                    ]},
+                    {name: "What is your HDL cholesterol?", result: 0, option: [
+                        {value: 0, text: "39 or lower"}, 
+                        {value: 1, text: "40 or higher"},
+                        {value: 2, text: "Don't know"}
+                    ]},
+                    {name: "Have you smoked at least 100 cigarettes?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "Do you walk (or do other moderate activity) for at least 30 minutes on most days, or at least 3 hours per week?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
+                    {name: "Has anyone in your immediate family (mother, father, sister, brother) had a heart attack?", result: false, option: [{value: true, text: "Yes"}, {value: false, text: "No"}]},
                 ] 
             }
         },
         computed:{
             color() {
-                if (this.latestG) {
+                if (this.latestHD) {
                     return {
-                        "background-green-700": this.latestG.category() === 0, 
-                        "background-amber-700": this.latestG.category() === 1, 
-                        "background-red-700": this.latestG.category() === 2,
+                        "background-green-700": this.latestHD.category() === 0, 
+                        "background-amber-700": this.latestHD.category() === 1, 
+                        "background-red-700": this.latestHD.category() === 2,
                     }
                 }
                 return {};
             },
-            showOptions(){
-                if (this.g.unit === 0 && parseFloat(this.g.value) >= 126) {
-                    return true;
-                }
-
-                if (this.g.unit === 1 && parseFloat(this.g.value) >= 7) {
-                    return true;
-                }
-
-                return false;
-            },
-            unitLabel() {
-                if (this.g.unit === 0) {
-                    return "Glucose Level (Mg/dL)";
-                }
-
-                return "Glucose Level (Mmol/L)";
-            }
         },
         methods: {
             save() {
                 this.$refs.loader.enable();
-                let g = new Glucose();
-                this.options.forEach((item, index)=> {
-                    if (item.option) {
-                        this.g.condition.push(index);
-                    }
-                });
+                let hd = new HeartDisease();
+                let array = [
+                    this.options[0].result,
+                    this.options[1].result,
+                    this.options[2].result,
+                    this.options[3].result,
+                    this.options[6].result,
+                    this.options[7].result,
+                    this.options[8].result,
+                ]
 
-                g.callMethod("create", this.g, (err, result) => {
+                hd.callMethod("create", array, (err, result) => {
                     this.$refs.loader.disable();
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }
-                    this.showAddG = false;
+                    this.showAddHD = false;
                     return this.$snackbar.run("Successfully add data");
                 });
             },
         },
         meteor: {
             subscribe: {
-                latestGlucose: [],
+                latestHeartDisease: [],
             },
-            latestG() {
-                return Glucose.findOne({}, {sort: {createdAt: -1}});
+            latestHD() {
+                return HeartDisease.findOne({}, {sort: {createdAt: -1}});
             }
         }
     }

@@ -23,7 +23,7 @@
                     <divider></divider>
                     <cards-action class="cards-content">
                         <div class="pull-right">
-                            <color-button @click="showMessage = false" class="primary" v-ripple>Ok</color-button>
+                            <flat-button @click="showMessage = false" class="primary" v-ripple>Ok</flat-button>
                         </div>
                     </cards-action>
                 </cards>

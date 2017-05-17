@@ -17,3 +17,14 @@ export const Images = new FilesCollection({
         }
     }
 });
+
+
+if(Meteor.isServer) {
+    Meteor.publishComposite('imageById', function(id) {
+        return {
+            find: function() {
+                return Images.find(id).cursor;
+            },
+        };
+    });
+}
