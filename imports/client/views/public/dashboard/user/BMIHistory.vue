@@ -120,6 +120,21 @@
                 </cards>
             </div>
         </reveal>
+        <reveal v-model="showAlert">
+            <div class="col-md-fluid-10" v-if="latestBMI">
+                <cards>
+                    <cards-content class="background-pink-800">
+                        <div class="color-white font-light font-title font-center no-margin">BMI Warning</div>
+                        <div class="color-white font-regular font-subhead font-center no-margin">You are being suspected to have {{latestBMI.description()}} BMI. We recommend you to meet doctor or go to neareast hospital/clinic.</div>
+                    </cards-content>
+                    <cards-action class="cards-content">
+                        <div class="pull-right">
+                            <color-button @click="showAlert = false" class="background-pink-800" v-ripple>OK</color-button>
+                        </div>
+                    </cards-action>
+                </cards>
+            </div>
+        </reveal>
         <loader ref="loader"></loader>
     </div>
 </template>
@@ -144,7 +159,8 @@
                 bmi: {
                     weight: "",
                     height: "",
-                }
+                },
+                showAlert: false,
             }
         },
         mounted() {
@@ -178,6 +194,12 @@
                     if (err) {
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }
+                    setTimeout(()=> {
+                        let b = Bmi.findOne(result);
+                        if (b.bmi() > 25) {
+                            this.showAlert = true;
+                        }
+                    }, 1000)
                     this.showAddBmi = false;
                     return this.$snackbar.run("Successfully add bmi");
                 });

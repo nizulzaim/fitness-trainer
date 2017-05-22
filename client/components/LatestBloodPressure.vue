@@ -110,6 +110,22 @@
                 </cards>
             </div>
         </reveal>
+
+        <reveal v-model="showAlert">
+            <div class="col-md-fluid-10" v-if="latestBP">
+                <cards>
+                    <cards-content :class="color">
+                        <div class="color-white font-light font-title font-center no-margin">High Blood Pressure Warning</div>
+                        <div class="color-white font-regular font-subhead font-center no-margin">You have {{latestBP.categoryDescription()}} blood pressure we recommend you to meet doctor or go to neareast hospital/clinic.</div>
+                    </cards-content>
+                    <cards-action class="cards-content">
+                        <div class="pull-right">
+                            <color-button @click="showAlert = false" :class="color" v-ripple>OK</color-button>
+                        </div>
+                    </cards-action>
+                </cards>
+            </div>
+        </reveal>
         <loader ref="loader"></loader>
     </div>
 </template>
@@ -130,6 +146,8 @@
                 showAddBP: false,
                 latestShowDetails: false,
                 showSuggestion: false,
+                showAlert: false,
+                detailsAlert: undefined,
                 bp: {
                     systolic: "",
                     diastolic: "",
@@ -185,6 +203,16 @@
                         return this.$snackbar.run(err.reason, () => {}, "OK", "error");
                     }
                     this.showAddBP = false;
+
+                    setTimeout(()=> {
+                        let bp = BloodPressure.findOne(result);
+                        if (bp.category() >= 3) {
+                            console.log("hello");
+                            this.detailsAlert = bp;
+                            this.showAlert = true;
+                        }
+                    }, 1000)
+                    
                     return this.$snackbar.run("Successfully add data");
                 });
             },
