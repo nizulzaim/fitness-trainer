@@ -10,7 +10,7 @@
                             
                         </div>
                         <div class="button-center-container">
-                            <icon-button name="delete" @click="deleteThis(thisData)" v-ripple></icon-button>
+                            <icon-button v-if="loginUser && loginUser.isAdmin()" name="delete" @click="deleteThis(thisData)" v-ripple></icon-button>
                         </div>
                     </div>
                 </scroll-bar>
