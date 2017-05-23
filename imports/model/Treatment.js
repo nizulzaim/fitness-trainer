@@ -51,6 +51,9 @@ if(Meteor.isServer) {
                 this.set(obj);
                 return this.save();
             },
+            removeItem() {
+                this.softRemove();
+            }
         }
     });
 
